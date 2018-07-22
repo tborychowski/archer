@@ -1,0 +1,16 @@
+{
+	"name": "archer-stats",
+	"version": "1.0.0",
+	"license": "GPL-3.0-or-later",
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"scripts": {},
+	"dependencies": {
+		"node-msg": "^1.2.3",
+		"request": "^2.87.0",
+		"request-promise-native": "^1.0.5"
+	},
+	"devDependencies": {}
+}
