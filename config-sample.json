@@ -1,0 +1,10 @@
+{
+	"baseURL": "http://192.168.1.1",
+	"username": "admin",
+	"password": "admin",
+	"devicemap": [
+		{ "name": "Macbook Pro", "mac": "00-00-00-00-00-00" },
+		{ "name": "iPhone",      "mac": "00-00-00-00-00-00" },
+		{ "name": "rpi",         "mac": "00-00-00-00-00-00" }
+	]
+}
