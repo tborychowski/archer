@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const Msg = require('node-msg');
 const {login, traffic} = require('./lib/archer-client');
 
