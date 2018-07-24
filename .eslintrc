@@ -5,6 +5,10 @@
 		"node": true,
 		"browser": true
 	},
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 8
+	},
 	"rules": {
 		"brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
 		"indent": [2, "tab"],
