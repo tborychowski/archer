@@ -1,6 +1,7 @@
 node_modules/
 
 config.json
+network.json
 
 .DS_Store
 *.log

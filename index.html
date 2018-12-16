@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+<meta charset=UTF-8>
+<title>Network Map</title>
+<style>
+	html, body { margin: 0; padding: 0; background: #222; color: #eee; font:  16px sans-serif; }
+	body { padding: 10px 20px; cursor: default; }
+	table { border-collapse: collapse; margin: 10px 0; width: 640px; }
+	table td { padding: 8px 10px; }
+	table thead td { background: #eee4; }
+	table tbody tr:hover { background: #eee1; }
+	.icon { text-align: center; width: 60px; }
+	.fas { font-size: 24px; }
+	.lopro { color: #eee4; }
+	a { color: lightskyblue; }
+	a:hover { color: lightblue; }
+</style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" crossorigin="anonymous">
+</head>
+<body>
+<h1>Network Map</h1>
+<table class="devices"><tbody></tbody></table>
+
+<script>
+	function getItemHtml (item) {
+		return `<tr>
+			<td class="icon"><i class="fas fa-${item.icon}"></i></td>
+			<td>${item.name}</td>
+			<td><a href="http://${item.ip}">${item.ip}</a></td>
+			<td class="lopro">${item.mac}</td>
+			<td class="lopro">${item.time}</td>
+		</tr>`;
+	}
+
+	fetch('network.json')
+		.then(res => res.json())
+		.then(res => {
+			document.querySelector('.devices  tbody').innerHTML =  res.map(getItemHtml).join('');
+		});
+</script>
+</body>
