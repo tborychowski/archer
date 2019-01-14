@@ -17,8 +17,8 @@ function saveToFile (data) {
 
 function writeToConsole (data) {
 	data.sort(sortByName);
-	const table = data.map(i => [chalk.yellow(i.name), i.ip, chalk.grey(i.mac)]);
-	table.unshift(['Name', 'IP', 'Mac']);
+	const table = data.map(i => [chalk.yellow(i.name), i.ip, chalk.grey(i.mac), i.size]);
+	table.unshift(['Name', 'IP', 'Mac', 'Traffic']);
 	Msg.table(table);
 }
 
