@@ -3,7 +3,7 @@
 const fs = require('fs');
 const Msg = require('node-msg');
 const chalk = require('chalk');
-const {login, network} = require('./lib/archer-client');
+const {login, traffic} = require('./lib/archer-client');
 
 const sortByName =  (a, b) => (''  + a.name).localeCompare('' + b.name);
 const sortByIp =  (a, b) => (+a.ip.split('.').pop()) - (+b.ip.split('.').pop());
@@ -25,7 +25,7 @@ function writeToConsole (data) {
 async function start () {
 	const loggedIn = await login();
 	if (!loggedIn) return;
-	const res = await network();
+	const res = await traffic();
 	saveToFile(res);
 	writeToConsole(res);
 }
