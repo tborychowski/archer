@@ -7,35 +7,66 @@
 	body { padding: 10px 20px; cursor: default; }
 	table { border-collapse: collapse; margin: 10px 0; width: 640px; }
 	table td { padding: 8px 10px; }
-	table thead td { background: #eee4; }
+	table thead th { background: #eee4; text-align: left; }
+	table thead th a { display: block; padding: 8px  10px; }
 	table tbody tr:hover { background: #eee1; }
 	.icon { text-align: center; width: 60px; }
 	.fas { font-size: 24px; }
 	.lopro { color: #eee4; }
 	a { color: lightskyblue; }
 	a:hover { color: lightblue; }
+	.sort { color: #eee; text-decoration: none; position: relative; }
+	.sorted:after { content: '⬇'; position: absolute; right: 10px; top: 5px; }
 </style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" crossorigin="anonymous">
 </head>
 <body>
 <h1>Network Map</h1>
-<table class="devices"><tbody></tbody></table>
+<table class="devices">
+	<thead>
+		<tr>
+			<th class="icon"></th>
+			<th><a href="#" class="sort sorted" data-sortby="name">Name</a></th>
+			<th><a href="#" class="sort" data-sortby="ip">IP</a></th>
+			<th><a href="#" class="sort" data-sortby="mac">MAC</a></th>
+			<th><a href="#" class="sort" data-sortby="bytes">Usage</a></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
 
 <script>
-	function getItemHtml (item) {
-		return `<tr>
-			<td class="icon"><i class="fas fa-${item.icon}"></i></td>
-			<td>${item.name}</td>
-			<td><a href="http://${item.ip}">${item.ip}</a></td>
-			<td class="lopro">${item.mac}</td>
-			<td class="lopro">${item.size}</td>
-		</tr>`;
+	let DATA;
+	const tableEl = document.querySelector('.devices  tbody');
+	const load = () => fetch('network.json').then(res => res.json()).then(res => (DATA = res));
+	const render = () => (tableEl.innerHTML = DATA.map(getItemHtml).join(''));
+
+	const getItemHtml = item => `<tr>
+		<td class="icon"><i class="fas fa-${item.icon}"></i></td>
+		<td>${item.name}</td>
+		<td><a href="http://${item.ip}">${item.ip}</a></td>
+		<td class="lopro">${item.mac}</td>
+		<td class="lopro">${item.size}</td>
+	</tr>`;
+
+	function sort (by) {
+		if (by === 'name') return DATA.sort((a, b) => ('' + a[by]).localeCompare('' + b[by]));
+		if (by === 'ip') return DATA.sort((a, b) => (+a.ip.split('.').pop()) - (+b.ip.split('.').pop()));
+		if (by === 'mac') return DATA.sort((a, b) => ('' + a[by]).replace('-', '').localeCompare(('' + b[by]).replace('-', '')));
+		return DATA.sort((a, b) => b[by] - a[by]);
 	}
 
-	fetch('network.json')
-		.then(res => res.json())
-		.then(res => {
-			document.querySelector('.devices  tbody').innerHTML =  res.map(getItemHtml).join('');
-		});
+	function onclick (e) {
+		const btn = e.target.closest('.sort');
+		if (!btn) return;
+		e.preventDefault();
+		document.querySelectorAll('.sorted').forEach(el => el.classList.remove('sorted'));
+		btn.classList.add('sorted');
+		sort(btn.dataset.sortby || 'name')
+		render();
+	}
+
+	document.addEventListener('click', onclick);
+	load().then(render);
 </script>
 </body>
