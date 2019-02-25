@@ -10,12 +10,14 @@ const sortByIp =  (a, b) => (+a.ip.split('.').pop()) - (+b.ip.split('.').pop());
 
 
 function saveToFile (data) {
+	if (!data || !data.length) return;
 	// data.sort(sortByIp);
 	data.sort(sortByName);
 	fs.writeFileSync(__dirname + '/network.json', JSON.stringify(data, null, '    '));
 }
 
 function writeToConsole (data) {
+	if (!data || !data.length) return;
 	data.sort(sortByName);
 	const table = data.map(i => [chalk.yellow(i.name), i.ip, chalk.grey(i.mac), i.size]);
 	table.unshift(['Name', 'IP', 'Mac', 'Traffic']);
@@ -26,6 +28,7 @@ async function start () {
 	const loggedIn = await login();
 	if (!loggedIn) return;
 	const res = await traffic();
+	if (!res) return console.log(chalk.red('Connection error'));
 	saveToFile(res);
 	writeToConsole(res);
 }
